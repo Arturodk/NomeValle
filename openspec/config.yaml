@@ -1,0 +1,48 @@
+# OpenSpec Configuration for Nomenclaturas del Valle
+# See: https://github.com/Fission-AI/OpenSpec/blob/main/docs/customization.md
+schema: spec-driven
+
+context: |
+  Proyecto: Nomenclaturas del Valle — tienda e-commerce de placas metálicas y números para viviendas
+  Tech Stack: Next.js 16, React 19, TypeScript, CSS Modules, Supabase (PostgreSQL + Auth + Storage), Wompi
+  Fase Actual: Phase 4 — Admin Panel (gestión de productos y pedidos)
+  Directorio del proyecto: NomeValle/web (Next.js App Router)
+  Base de datos: PostgreSQL en Supabase — 5 tablas: profiles, products, product_images, orders, order_items
+  Auth: Supabase Auth (email/password), roles: 'customer' | 'admin'
+  Pagos: Wompi (Colombia) — widget de pago embebido integrado (pendiente de validación manual con credenciales reales)
+  Almacenamiento: Supabase Storage, bucket: product-images
+  Idioma preferido: Español para documentación, Inglés para código
+  Documentos de referencia:
+    - 01_PRD_Nomenclaturas_del_Valle.txt: requisitos del producto y casos de uso
+    - 02_Arquitectura_Nomenclaturas_del_Valle.txt: stack técnico y decisiones de arquitectura
+    - 03_Sitemap_Nomenclaturas_del_Valle.txt: páginas, rutas y flujos de navegación
+    - 04_DisenoUI_Nomenclaturas_del_Valle.txt: sistema de diseño, tokens y componentes
+    - 05_BaseDatos_Nomenclaturas_del_Valle.txt: esquema completo de Supabase con RLS
+
+rules:
+  proposal:
+    - Revisar el PRD (01_PRD) antes de proponer nuevas funcionalidades
+    - No modificar el esquema de base de datos sin incluir la migración SQL correspondiente
+    - Las operaciones de stock DEBEN ocurrir en un trigger de Supabase, nunca en el cliente
+    - Incluir plan de rollback para cualquier cambio de base de datos o de autenticación
+    - No usar la Supabase service_role key en el cliente; solo la anon key
+  specs:
+    - Usar formato Given/When/Then para escenarios de usuario
+    - Referenciar las páginas del Sitemap (03_Sitemap) al describir flujos de usuario
+    - SYNC: Toda nueva feature DEBE tener su spec en openspec/specs/[feature]/spec.md
+    - Los precios se expresan siempre en pesos colombianos como INTEGER (sin decimales)
+    - Distinguir claramente entre flujos de 'customer' y 'admin'
+  design:
+    - Validación siempre en el servidor (API Routes de Next.js o Supabase RLS)
+    - Nunca exponer la service_role key de Supabase en el cliente
+    - Todas las queries deben respetar las políticas RLS definidas en 05_BaseDatos
+    - CSS Modules para estilos de componentes — nunca estilos inline salvo casos puntuales
+    - Mobile-first: diseñar para 375px primero, escalar hacia arriba
+    - Las imágenes de productos van en Supabase Storage (bucket: product-images)
+    - Usar Server Components de Next.js para fetching de datos cuando sea posible
+  tasks:
+    - Incluir pasos de verificación en cada tarea
+    - Toda tarea de base de datos DEBE incluir la política RLS correspondiente
+    - Separar tareas por capa: UI, lógica de negocio, base de datos
+    - Priorizar seguridad sobre conveniencia
+    - TESTING: Toda tarea de integración DEBE incluir un paso de prueba manual documentado

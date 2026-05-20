@@ -1,0 +1,58 @@
+
+
+NOMENCLATURAS DEL VALLE
+-----------------------------
+Base de Datos
+Diseño y estructura de datos
+Documento 5 de 5  ·  Versión 1.0  ·  2025
+
+
+1. Introducción
+
+La base de datos de Nomenclaturas del Valle es una base relacional PostgreSQL alojada en Supabase. El diseño es simple e intencional: solo las tablas estrictamente necesarias para el MVP. Cada tabla tiene su propósito claro y no se agrega complejidad innecesaria.
+
+2. Tablas del sistema
+
+El sistema tiene 5 tablas principales. A continuación se describe cada una con sus columnas, tipos y propósito.
+
+2.1 Tabla: users (usuarios)
+Gestionada por Supabase Auth. Se extiende con una tabla "profiles" para datos adicionales.
+
+ColumnaTipoDescripciónidUUID (PK)Identificador único del usuario (generado por Supabase)emailTEXT UNIQUECorreo electrónico - usado para loginfull_nameTEXTNombre completo del clientephoneTEXTTeléfono de contacto (opcional)addressTEXTDirección de envío predeterminada (opcional)roleTEXT DEFAULT 'customer'Rol del usuario: 'customer' o 'admin'created_atTIMESTAMPTZFecha de registro
+2.2 Tabla: products (productos)
+
+ColumnaTipoDescripciónidUUID (PK)Identificador único del productonameTEXT NOT NULLNombre del producto (ej. "Placa metálica N°5 doble")descriptionTEXTDescripción detallada del productomaterialTEXT NOT NULLMaterial: 'metalico', 'bronce', 'aluminio'priceINTEGER NOT NULLPrecio en pesos colombianos (sin decimales)stockINTEGER DEFAULT 0Unidades disponibles en inventariois_activeBOOLEAN DEFAULT trueSi el producto está visible en el catálogocreated_atTIMESTAMPTZFecha de creación del registroupdated_atTIMESTAMPTZÚltima actualización
+2.3 Tabla: product_images (imágenes de productos)
+Un producto puede tener varias imágenes. Se separan en tabla propia para mayor flexibilidad.
+
+ColumnaTipoDescripciónidUUID (PK)Identificador único de la imagenproduct_idUUID (FK ? products.id)Producto al que pertenece esta imagenurlTEXT NOT NULLURL de la imagen en Supabase Storageis_primaryBOOLEAN DEFAULT falseSi es la imagen principal del productosort_orderINTEGER DEFAULT 0Orden de aparición en la galería
+2.4 Tabla: orders (pedidos)
+
+ColumnaTipoDescripciónidUUID (PK)Identificador único del pedidouser_idUUID (FK ? users.id)Usuario que realizó el pedidostatusTEXT NOT NULLEstado: 'pendiente', 'pagado', 'enviado', 'entregado', 'cancelado'totalINTEGER NOT NULLTotal del pedido en pesos colombianosshipping_nameTEXT NOT NULLNombre de quien recibeshipping_phoneTEXT NOT NULLTeléfono de contacto para el envíoshipping_addressTEXT NOT NULLDirección completa de entregawompi_transaction_idTEXTID de transacción en Wompi para trazabilidadcreated_atTIMESTAMPTZFecha y hora del pedidoupdated_atTIMESTAMPTZÚltima actualización del estado
+2.5 Tabla: order_items (ítems del pedido)
+Detalle de qué productos y cantidades incluye cada pedido. Se guarda el precio al momento de la compra para que no cambie si el precio del producto cambia después.
+
+ColumnaTipoDescripciónidUUID (PK)Identificador único del ítemorder_idUUID (FK ? orders.id)Pedido al que perteneceproduct_idUUID (FK ? products.id)Producto compradoquantityINTEGER NOT NULLCantidad de unidades compradasunit_priceINTEGER NOT NULLPrecio unitario al momento de la comprasubtotalINTEGER NOT NULLquantity × unit_price
+3. Relaciones entre tablas
+
+Tabla origenRelaciónTabla destinoproduct_imagesMuchos a uno (N:1)productsordersMuchos a uno (N:1)usersorder_itemsMuchos a uno (N:1)ordersorder_itemsMuchos a uno (N:1)products
+4. Reglas de negocio en la base de datos
+
+• Cuando se crea un order_item, se descuenta el stock del producto correspondiente (trigger en Supabase).
+• Si el pago en Wompi falla o se cancela, el pedido queda en estado "cancelado" y el stock se restaura.
+• Solo usuarios con role = "admin" pueden insertar, actualizar o eliminar en la tabla products.
+• Los precios en la base de datos se almacenan en pesos colombianos como enteros (sin decimales) para evitar errores de redondeo.
+
+5. Índices recomendados
+
+• products: índice en "material" para acelerar los filtros del catálogo.
+• products: índice en "is_active" para no mostrar productos desactivados.
+• orders: índice en "user_id" para cargar rápido el historial de un usuario.
+• orders: índice en "status" para el panel de administración.
+• order_items: índice en "order_id" para cargar los ítems de un pedido.
+
+6. Seguridad de datos (Row Level Security)
+
+Supabase permite configurar políticas de seguridad a nivel de fila (RLS). Las políticas recomendadas son:
+
+TablaPolíticaQuién puedeproductsSELECT públicoCualquier visitante puede leer productos activosproductsINSERT/UPDATE/DELETESolo adminsordersSELECT propioEl usuario solo ve sus propios pedidosordersSELECT todosAdmin puede ver todos los pedidosorder_itemsSELECT propioEl usuario ve ítems de sus pedidosusers/profilesSELECT/UPDATE propioEl usuario solo accede a su propio perfil

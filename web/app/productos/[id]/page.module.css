@@ -1,0 +1,157 @@
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2xl);
+  padding: var(--space-lg) 0 var(--space-3xl);
+}
+
+/* Gallery */
+.gallery {
+  position: sticky;
+  top: calc(var(--header-height) + var(--space-lg));
+  align-self: start;
+}
+
+.mainImage {
+  aspect-ratio: 1;
+  background: var(--color-bg-alt);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: var(--space-md);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnails {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+  background: var(--color-bg-alt);
+  padding: 0;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbActive {
+  border-color: var(--color-primary);
+}
+
+/* Info */
+.info {
+  padding-top: var(--space-sm);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.price {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-lg);
+}
+
+.description {
+  color: var(--color-gray-text);
+  line-height: 1.7;
+  margin-bottom: var(--space-lg);
+}
+
+.description p {
+  margin-bottom: var(--space-md);
+}
+
+.description p:last-child {
+  margin-bottom: 0;
+}
+
+.stock {
+  margin-bottom: var(--space-lg);
+}
+
+.inStock {
+  color: var(--color-success);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.outStock {
+  color: var(--color-error);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+}
+
+.btnAdded {
+  background-color: var(--color-success) !important;
+}
+
+/* Detail rows */
+.details {
+  border-top: 1px solid var(--color-gray-border);
+  padding-top: var(--space-lg);
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-sm) 0;
+  font-size: 14px;
+  border-bottom: 1px solid var(--color-bg-alt);
+}
+
+.detailRow span:first-child {
+  color: var(--color-gray-text);
+}
+
+.detailRow span:last-child {
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  .gallery {
+    position: static;
+  }
+
+  .name {
+    font-size: 1.4rem;
+  }
+
+  .price {
+    font-size: 1.5rem;
+  }
+}

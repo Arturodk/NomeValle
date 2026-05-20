@@ -1,0 +1,51 @@
+
+
+NOMENCLATURAS DEL VALLE
+-----------------------------
+Arquitectura
+Diseño técnico del sistema
+Documento 2 de 5  ·  Versión 1.0  ·  2025
+
+
+1. Visión general
+
+La arquitectura de Nomenclaturas del Valle está diseñada para ser simple, económica y escalable. Dado que es un negocio que está arrancando, se prioriza la facilidad de mantenimiento y los costos bajos sobre la complejidad técnica. Se propone una arquitectura web estándar de tres capas: frontend, backend/API y base de datos.
+
+2. Stack tecnológico recomendado
+
+CapaTecnologíaJustificaciónFrontendNext.js (React)SEO nativo, rápido, amplia comunidad.Backend / APINext.js API RoutesMismo repositorio, sin servidor separado para el MVP. Corre como servicio en Dokploy (puerto 3001).Base de datosPostgreSQL (Supabase)Gratis hasta 500MB, interfaz visual, fácil de escalarAutenticaciónSupabase AuthLogin con email incluido en el plan gratisPasarela de pagoWompi (Bancolombia)Colombiana, sin mensualidad, comisión por transacciónAlmacenamiento de imágenesSupabase StorageIncluido en el plan gratuito inicialHostingVPS Hostinger KV2 (2 vCPU, 8GB RAM) con DokployPanel de despliegue Dokploy maneja Next.js, Nginx como proxy inverso y SSL automático. PM2 no es necesario. Dominio: implementaiasolution.comWhatsAppAPI flotante (widget HTML)Sin costo, fácil de instalar
+
+3. Diagrama de capas (descripción textual)
+
+Dado que este es un documento Word, el diagrama se describe en texto. Para visualizarlo gráficamente, ver el Sitemap (Doc 3) o crear el diagrama en Figma/draw.io con esta estructura:
+
+Capa 1 - Cliente (Navegador / Celular)
+• El usuario abre la página web en su celular o computador.
+• Next.js entrega páginas pre-renderizadas (SSG/SSR) para máxima velocidad.
+• El carrito y el estado de sesión se gestionan en el cliente (React Context + localStorage).
+
+Capa 2 - Servidor / API (VPS Hostinger + Dokploy)
+• Las API Routes de Next.js manejan: autenticación, consulta de productos, creación de pedidos, integración con Wompi.
+• No hay servidor Express separado; la app Next.js corre como un servicio en Dokploy en el puerto 3001. Nginx ya está manejado por Dokploy como proxy inverso.
+• El botón de WhatsApp es un widget estático que no requiere backend.
+
+Capa 3 - Servicios externos
+• Supabase: base de datos PostgreSQL + autenticación + almacenamiento de imágenes.
+• Wompi: procesa el pago y notifica al backend vía webhook cuando el pago es exitoso.
+• Dokploy: hospeda el sitio, despliega automáticamente cada actualización y maneja SSL (vía Certbot o auto).
+
+4. Flujo de una compra (paso a paso técnico)
+
+PasoQuién actúaQué ocurre1UsuarioNavega al catálogo y selecciona un producto2FrontendSolicita detalle del producto a la API (/api/products/[id])3BackendConsulta la tabla "products" en Supabase y retorna los datos4UsuarioAgrega al carrito y hace clic en "Comprar ahora"5FrontendCrea una sesión de pago enviando el pedido a /api/orders/create6BackendRegistra el pedido en estado "pendiente" y llama a Wompi para crear la transacción7WompiRedirige al usuario a su página de pago segura8UsuarioCompleta el pago en la plataforma de Wompi9WompiEnvía webhook a /api/webhooks/wompi confirmando el pago10BackendActualiza el pedido a estado "pagado" en Supabase11UsuarioEs redirigido a la página de confirmación de compra
+
+5. Seguridad básica
+
+• Todas las comunicaciones usan HTTPS (SSL con Certbot o el que provea Dokploy automáticamente).
+• Las claves de API (Supabase, Wompi) se guardan en variables de entorno, nunca en el código.
+• La autenticación usa JWT tokens manejados por Supabase Auth.
+• El webhook de Wompi se valida con una firma secreta para evitar fraudes.
+• Los datos de tarjeta NUNCA pasan por el servidor propio; los maneja Wompi directamente.
+
+6. Estimación de costos mensuales (MVP)
+
+ServicioPlanCostoVPS Hostinger KV2Ya contratado$0 adicionalSupabaseFree tier$0 USDDominio (implementaiasolution.com)Pago anual~$40.000 COP/añoWompiSin mensualidad2.95% por transacciónTotal fijo mensual~$0 - $5 USDNota: los costos solo escalan si el tráfico supera los límites del plan gratis, lo cual no ocurrirá en los primeros meses de operación.

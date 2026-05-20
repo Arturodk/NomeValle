@@ -1,0 +1,52 @@
+
+
+NOMENCLATURAS DEL VALLE
+-----------------------------
+Sitemap
+Mapa de navegación y páginas
+Documento 3 de 5  ·  Versión 1.0  ·  2025
+
+
+1. Estructura de páginas
+
+El siguiente árbol describe todas las páginas del sitio web, su URL y su propósito. Se usa una jerarquía de 3 niveles máximo para mantener la navegación simple.
+
+Nivel 0 - Raíz
+
+URLPáginaDescripción/Inicio (Home)Hero, propuesta de valor, productos destacados, CTA a catálogo
+Nivel 1 - Secciones principales
+
+URLPáginaDescripción/productosCatálogoGrid de productos con filtros por material/contactoContactoInformación de contacto + botón directo a WhatsApp/cuentaMi cuentaDashboard del usuario autenticado/carritoCarritoResumen de productos seleccionados y total/pagoPagoFormulario de envío + checkout con Wompi
+Nivel 2 - Sub-páginas
+
+URLPáginaDescripción/productos/[id]Detalle de productoGalería, descripción, precio, botón comprar, botón WhatsApp/cuenta/pedidosMis comprasHistorial de pedidos del usuario/cuenta/pedidos/[id]Detalle de pedidoEstado y detalle de un pedido específico/pago/confirmacionConfirmación de pagoPantalla de éxito tras compra exitosa/auth/loginIniciar sesiónFormulario de login con email y contraseña/auth/registroCrear cuentaFormulario de registro de nuevo usuario
+Nivel 3 - Panel de administración
+
+URLPáginaDescripción/adminDashboard adminResumen de pedidos y accesos rápidos/admin/productosGestión de productosLista de productos con opción de crear, editar y eliminar/admin/productos/nuevoNuevo productoFormulario para agregar producto con fotos y precio/admin/productos/[id]/editarEditar productoFormulario de edición de un producto existente/admin/pedidosGestión de pedidosLista de todos los pedidos con filtro por estado/admin/pedidos/[id]Detalle de pedidoVer y cambiar estado de un pedido (pendiente, enviado, entregado)
+2. Navegación global (Header)
+
+El header está presente en todas las páginas excepto en el flujo de pago. Contiene:
+• Logo / Nombre del negocio (enlace al inicio).
+• Enlace: Productos (va a /productos).
+• Enlace: Contacto (va a /contacto).
+• Ícono de carrito con contador de ítems (va a /carrito).
+• Enlace: Ingresar / Mi cuenta (va a /auth/login o /cuenta según estado de sesión).
+
+3. Componentes globales
+
+ComponentePresente enDescripciónHeaderTodas las páginasLogo, navegación, carrito, cuentaFooterTodas las páginasNombre del negocio, WhatsApp, copyrightBotón flotante WhatsAppTodas las páginasÍcono fijo inferior derecha con mensaje predefinidoBreadcrumbDetalle de productoInicio > Productos > [nombre del producto]
+4. Flujos de navegación clave
+
+Flujo de compra
+1. Usuario llega a / (inicio)
+2. Va a /productos (catálogo)
+3. Selecciona un producto ? /productos/[id]
+4. Hace clic en "Comprar ahora" ? /carrito
+5. Procede al pago ? /pago
+6. Completa pago en Wompi ? retorna a /pago/confirmacion
+
+Flujo de cuenta
+7. Usuario hace clic en "Ingresar" ? /auth/login
+8. Si no tiene cuenta ? /auth/registro
+9. Tras login ? redirige a /cuenta
+10. Puede ver sus compras en /cuenta/pedidos

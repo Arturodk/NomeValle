@@ -1,0 +1,165 @@
+.builderContainer {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.title {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  color: var(--color-text);
+}
+
+.description {
+  font-size: 0.9rem;
+  color: var(--color-gray-text);
+  margin-bottom: 16px;
+}
+
+/* Input row: text field + add button side by side */
+.inputRow {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.inputWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 1.25rem;
+  background-color: white;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: bold;
+  color: #1e293b;
+  text-align: center;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: #94a3b8;
+  font-weight: normal;
+  letter-spacing: normal;
+}
+
+.input:hover {
+  border-color: #94a3b8;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1), inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.inputError {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.errorMsg {
+  font-size: 0.8rem;
+  color: #ef4444;
+  padding-left: 4px;
+}
+
+.addBtn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  padding: 12px 16px;
+  align-self: flex-start;
+}
+
+/* Plate queue */
+.plateList {
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+
+.plateListLabel {
+  font-size: 0.85rem;
+  color: var(--color-gray-text);
+  margin: 0 0 10px 0;
+  font-weight: 500;
+}
+
+.plateItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.plateItem:last-of-type {
+  border-bottom: none;
+}
+
+.plateText {
+  flex: 1;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  color: #1e293b;
+}
+
+.platePrice {
+  font-size: 0.9rem;
+  color: var(--color-gray-text);
+}
+
+.removeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.removeBtn:hover:not(:disabled) {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+.removeBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+/* Total row */
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.05rem;
+  color: var(--color-primary);
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--color-border);
+}

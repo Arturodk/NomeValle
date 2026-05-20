@@ -1,0 +1,67 @@
+
+
+NOMENCLATURAS DEL VALLE
+-----------------------------
+Diseño UI/UX
+Guía de estilo e interfaz de usuario
+Documento 4 de 5  ·  Versión 1.0  ·  2025
+
+
+1. Filosofía de diseño
+
+El diseño de Nomenclaturas del Valle debe transmitir confianza, artesanía y solidez - valores directamente relacionados con los materiales que vende (bronce, aluminio, metal). La referencia visual es similar a Mercado Libre en estructura, pero depurada: sin ruido visual, sin descuentos agresivos, sin elementos que distraigan al comprador.
+Principio rector: que el producto sea el protagonista. Las fotos del producto son lo más importante de cada página.
+
+2. Paleta de colores
+
+NombreHexUsoAzul marino (primario)#1A3C5EHeader, botones primarios, encabezadosDorado/bronce (acento)#C8860ACTAs secundarios, detalles decorativos, precio destacadoBlanco#FFFFFFFondo principal, tarjetas de productoGris claro#F4F6F9Fondos alternos, sección de filtrosGris texto#6B7280Textos secundarios, descripciones cortasNegro suave#111827Texto principal, preciosRojo alerta#DC2626Mensajes de error, stock agotadoVerde éxito#16A34AConfirmación de pago, mensajes de éxito
+3. Tipografía
+
+UsoFuenteTamaño / PesoNombre del negocio / Logo textoPlayfair Display24px - BoldTítulos de sección (H1)Playfair Display32-40px - BoldSubtítulos (H2)Inter22-26px - SemiboldNombre del productoInter20px - SemiboldPrecioInter28px - Bold - color #111827Descripción / CuerpoInter15-16px - RegularBotonesInter15px - SemiboldLabels, metadataInter13px - Regular - color #6B7280
+4. Componentes de interfaz
+
+4.1 Header
+• Fondo blanco con línea inferior sutil (#E5E7EB, 1px).
+• Logo a la izquierda: ícono + "Nomenclaturas del Valle" en Playfair Display.
+• Menú central: Productos | Contacto.
+• Acciones a la derecha: ícono carrito (con badge numérico) + "Ingresar" o foto de avatar si está logueado.
+• En móvil: menú hamburguesa que despliega las opciones verticalmente.
+
+4.2 Tarjeta de producto (Catálogo)
+• Imagen cuadrada del producto sobre fondo blanco, sin decoración extra.
+• Nombre del producto en 2 líneas máximo.
+• Precio en grande y bold.
+• Material visible como etiqueta pequeña (ej. "Aluminio", "Bronce").
+• Al hacer hover: sombra suave y cursor pointer.
+• Sin descuentos, sin "más vendido", sin stickers innecesarios para el MVP.
+
+4.3 Página de detalle del producto
+• Layout de 2 columnas en desktop: imágenes a la izquierda, info a la derecha.
+• En móvil: imágenes arriba, info abajo (una columna).
+• Imagen principal grande (cuadrada, 500x500 mínimo).
+• Miniaturas debajo o al lado izquierdo (máximo 5 ángulos adicionales).
+• Al hacer clic en una miniatura, la imagen principal cambia.
+• Breadcrumb arriba: Inicio > Productos > [Nombre del producto].
+• Info del producto: nombre, material, descripción detallada, precio, botón "Agregar al carrito" y botón "Consultar por WhatsApp".
+
+4.4 Botones principales
+TipoColor fondoTextoUsoPrimario#1A3C5E (azul)Blanco"Comprar ahora", "Agregar al carrito"SecundarioBorde #1A3C5EAzul"Ver catálogo", "Volver"WhatsApp#25D366 (verde)Blanco"Consultar por WhatsApp"Flotante WhatsApp#25D366ÍconoBotón fijo en esquina inferior derecha
+4.5 Carrito y checkout
+• Carrito: lista de productos con foto pequeña, nombre, precio unitario y cantidad.
+• Botón de eliminar producto (ícono de papelera).
+• Total al final, bien visible.
+• Botón "Proceder al pago" en azul primario.
+• Checkout: nombre, teléfono, dirección de envío + botón de pago a Wompi.
+• NO mostrar campos innecesarios. Solo lo esencial para enviar el pedido.
+
+5. Principios de UX
+
+• Mobile-first: diseñar primero para celular, luego adaptar a desktop.
+• Velocidad sobre decoración: no cargar animaciones pesadas ni fuentes extravagantes.
+• Confianza visible: mostrar número de WhatsApp en el footer y sello de pago seguro en el checkout.
+• Flujo corto: el usuario no debe dar más de 4 clics desde que llega hasta que paga.
+• Errores claros: si algo falla en el pago, mostrar mensaje claro y ofrecer contacto por WhatsApp como alternativa.
+
+6. Herramientas de diseño recomendadas
+
+HerramientaPara qué usarlaCostoFigmaCrear mockups y prototipos antes de programarGratis (plan básico)Unsplash / fotos propiasImágenes de productos y fondosGratisCanvaCrear el logo si no hay diseñador disponibleGratisGoogle FontsImportar Playfair Display e Inter al sitioGratis

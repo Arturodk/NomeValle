@@ -1,0 +1,83 @@
+
+
+NOMENCLATURAS DEL VALLE
+-----------------------------
+PRD
+Product Requirements Document
+Documento 1 de 5  ·  Versión 1.0  ·  2025
+
+
+1. Resumen ejecutivo
+
+Nomenclaturas del Valle es una tienda online especializada en nomenclaturas para casas y edificios, ofreciendo placas metálicas, números sueltos y piezas en bronce y aluminio. La página web tiene como objetivo principal digitalizar el proceso de venta, permitir a clientes residenciales conocer el catálogo, realizar compras directamente y contactar al negocio.
+
+NegocioNomenclaturas del Valle
+TipoTienda e-commerce B2C
+FaseMVP - lanzamiento inicial
+MercadoColombia - clientes residenciales
+2. Objetivos del producto
+
+2.1 Objetivos de negocio
+• Tener presencia digital profesional para generar confianza en clientes nuevos.
+• Permitir ventas en línea 24/7 sin depender únicamente de canales presenciales o WhatsApp.
+• Mostrar el catálogo completo de productos con fotos, descripciones y precios claros.
+• Facilitar el contacto directo vía WhatsApp para pedidos personalizados o preguntas.
+
+2.2 Objetivos del usuario
+• Ver todos los productos disponibles (materiales, tamaños, estilos) con imágenes reales.
+• Conocer el precio exacto antes de comprar.
+• Realizar el pago de forma segura desde la misma página.
+• Contactar fácilmente al vendedor si tiene dudas o quiere un diseño especial.
+
+3. Usuarios objetivo
+
+Perfil principal: personas naturales propietarias de casas, apartamentos o locales que necesitan nomenclatura nueva, de reposición o con diseño especial. Son compradores individuales, no empresas. Su proceso de decisión es corto: ven el producto, les gusta, compran.
+
+CaracterísticaDescripciónEdad25 - 60 añosUbicaciónColombia (inicialmente Valle del Cauca)DispositivoPrincipalmente celular (80%), computador (20%)MotivaciónRenovar o instalar nomenclatura en su hogarComportamientoBuscan en Google o Instagram, comparan visualmenteBarrera principalDesconfianza en pagar online a negocios pequeños
+4. Alcance del MVP
+
+El MVP cubre las funcionalidades mínimas para operar como tienda online funcional. Se excluyen intencionalmente funciones que agregan complejidad innecesaria para un negocio que está arrancando.
+
+4.1 Incluido en el MVP
+• Página de inicio con propuesta de valor y acceso rápido al catálogo.
+• Catálogo de productos con filtros básicos (por material: metálico, bronce, aluminio).
+• Página de detalle del producto: galería de imágenes, descripción, precio, botón comprar.
+• Carrito de compras con resumen del pedido.
+• Proceso de pago integrado (pasarela de pago colombiana).
+• Integración de botón flotante de WhatsApp en toda la web.
+• Página de contacto.
+• Cuentas de usuario: crear cuenta, iniciar sesión, ver mis compras.
+• Panel de administrador básico para gestionar productos y pedidos.
+
+4.2 Excluido del MVP (futuras versiones)
+• Envío gratis o calculadora de envíos automática.
+• Blog o sección de contenido.
+• Reseñas y calificaciones de productos.
+• Cupones de descuento.
+• Múltiples idiomas.
+
+5. Requerimientos funcionales
+
+IDMóduloRequerimientoPrioridadRF-01CatálogoListar productos con foto, nombre y precioAltaRF-02CatálogoFiltrar productos por materialMediaRF-03ProductoVer galería de imágenes del productoAltaRF-04ProductoVer descripción, precio y disponibilidadAltaRF-05CarritoAgregar/eliminar productos y ver totalAltaRF-06PagoPagar con tarjeta / PSE / NequiAltaRF-07WhatsAppBotón flotante con mensaje predefinidoAltaRF-08UsuarioRegistro e inicio de sesiónMediaRF-09UsuarioVer historial de comprasMediaRF-10AdminCrear, editar y eliminar productosAltaRF-11AdminVer y actualizar estado de pedidosAlta
+6. Requerimientos no funcionales
+
+• Velocidad: la página debe cargar en menos de 3 segundos en celular con 4G.
+• Responsive: diseño adaptado a móvil, tablet y desktop.
+• Seguridad: el pago debe procesarse por pasarela certificada (Wompi, PayU o similar).
+• SEO básico: títulos, meta descripciones y URLs amigables por producto.
+• Disponibilidad: uptime mínimo del 99% mensual.
+
+7. Métricas de éxito
+
+MétricaMeta inicial (3 meses)Visitas mensuales al sitio500+ visitantes únicosTasa de conversión2% o más (visita ? compra)Ventas online generadas20+ pedidos completadosTasa de abandono de carritoMenor al 70%Tiempo de carga móvilMenos de 3 segundos
+8. Supuestos y riesgos
+
+Supuestos
+• El negocio tiene inventario disponible para despacho en menos de 3 días hábiles.
+• Se puede integrar una pasarela de pago colombiana desde el inicio.
+• Las fotos de los productos son de calidad suficiente para publicar.
+
+Riesgos
+• Riesgo: clientes no confían en pagar online. Mitigación: mostrar sello de seguridad y opción de contacto por WhatsApp.
+• Riesgo: demora en la integración de pagos. Mitigación: iniciar el proceso de registro en la pasarela desde el día 1.
+• Riesgo: fotos de baja calidad. Mitigación: invertir en fotografía de producto antes del lanzamiento.
