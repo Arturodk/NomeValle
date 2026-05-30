@@ -25,7 +25,7 @@ export async function GET(
 
     // 2. Si el pago fue aprobado, actualizamos el pedido en Supabase
     if (status === 'APPROVED') {
-      const supabase = await createClient();
+      const supabase = createAdminClient();
       
       const { error: updateError } = await supabase
         .from('orders')
