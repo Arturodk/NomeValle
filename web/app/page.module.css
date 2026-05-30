@@ -28,7 +28,8 @@
 .heroContent {
   position: relative;
   z-index: 2;
-  max-width: 700px;
+  max-width: 1024px;
+  width: 100%;
   padding: var(--space-4xl) var(--space-xl);
   margin: 0 auto;
   text-align: center;

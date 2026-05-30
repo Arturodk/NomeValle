@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ShoppingCart, PlusCircle, X } from 'lucide-react';
 import { formatPrice } from '@/lib/mock-data';
+import { gsap } from '@/lib/gsap';
 import styles from './PlateBuilder.module.css';
 
 interface PlateBuilderProps {
@@ -12,6 +13,11 @@ interface PlateBuilderProps {
 }
 
 type ValidationError = string | null;
+
+interface PlateItem {
+  id: string;
+  text: string;
+}
 
 function validatePlate(text: string): ValidationError {
   if (!text.trim()) return null; // Empty — handled by isValid
@@ -35,7 +41,7 @@ function validatePlate(text: string): ValidationError {
 
 export function PlateBuilder({ price, onAddToCart, disabled }: PlateBuilderProps) {
   const [currentText, setCurrentText] = useState('');
-  const [plates, setPlates] = useState<string[]>([]);
+  const [plates, setPlates] = useState<PlateItem[]>([]);
   const [confirmed, setConfirmed] = useState(false);
 
   const validationError = currentText.length > 0 ? validatePlate(currentText) : null;
@@ -43,12 +49,36 @@ export function PlateBuilder({ price, onAddToCart, disabled }: PlateBuilderProps
 
   const handleAddPlate = () => {
     if (!isCurrentValid) return;
-    setPlates(prev => [...prev, currentText.trim().toUpperCase()]);
+    const newPlate: PlateItem = {
+      id: Math.random().toString(36).substring(2, 9),
+      text: currentText.trim().toUpperCase(),
+    };
+    setPlates(prev => [...prev, newPlate]);
     setCurrentText('');
   };
 
-  const handleRemovePlate = (index: number) => {
-    setPlates(prev => prev.filter((_, i) => i !== index));
+  const handleRemovePlate = (id: string, event: React.MouseEvent<HTMLButtonElement>) => {
+    const buttonElement = event.currentTarget;
+    const itemElement = buttonElement.closest(`.${styles.plateItem}`);
+    
+    if (itemElement) {
+      gsap.to(itemElement, {
+        opacity: 0,
+        x: -50,
+        height: 0,
+        paddingTop: 0,
+        paddingBottom: 0,
+        marginTop: 0,
+        marginBottom: 0,
+        duration: 0.3,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          setPlates(prev => prev.filter(plate => plate.id !== id));
+        }
+      });
+    } else {
+      setPlates(prev => prev.filter(plate => plate.id !== id));
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -60,7 +90,7 @@ export function PlateBuilder({ price, onAddToCart, disabled }: PlateBuilderProps
 
   const handleConfirm = () => {
     if (plates.length === 0) return;
-    plates.forEach(plate => onAddToCart(plate, price));
+    plates.forEach(plate => onAddToCart(plate.text, price));
     setPlates([]);
     setCurrentText('');
     setConfirmed(true);
@@ -110,16 +140,16 @@ export function PlateBuilder({ price, onAddToCart, disabled }: PlateBuilderProps
       {plates.length > 0 && (
         <div className={styles.plateList}>
           <p className={styles.plateListLabel}>Placas en tu pedido:</p>
-          {plates.map((plate, idx) => (
-            <div key={idx} className={styles.plateItem}>
-              <span className={styles.plateText}>{plate}</span>
+          {plates.map((plateObj) => (
+            <div key={plateObj.id} className={styles.plateItem}>
+              <span className={styles.plateText}>{plateObj.text}</span>
               <span className={styles.platePrice}>{formatPrice(price)}</span>
               <button
                 type="button"
                 className={styles.removeBtn}
-                onClick={() => handleRemovePlate(idx)}
+                onClick={(e) => handleRemovePlate(plateObj.id, e)}
                 disabled={disabled}
-                aria-label={`Eliminar placa ${plate}`}
+                aria-label={`Eliminar placa ${plateObj.text}`}
               >
                 <X size={14} />
               </button>

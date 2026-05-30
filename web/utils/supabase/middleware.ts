@@ -46,7 +46,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   // Proteger rutas de admin — requiere verificar el rol en la DB
-  const isAdmin = adminRoutes.some(route => pathname.startsWith(route))
+  const isAdmin = adminRoutes.some(route => pathname === route || pathname.startsWith(route + '/'))
   if (isAdmin) {
     if (!user) {
       const url = request.nextUrl.clone()

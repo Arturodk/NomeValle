@@ -9,9 +9,10 @@ const env = fs.readFileSync('.env.local', 'utf8').split('\n').reduce((acc, line)
 const supabase = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY || env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
 async function test() {
-  const { data, error } = await supabase.from('orders').select('*');
-  console.log('Orders:', JSON.stringify(data, null, 2));
+  const { data, error } = await supabase.from('profiles').select('*');
+  console.log('Profiles:', JSON.stringify(data, null, 2));
   if (error) console.error('Error:', error);
 }
 
 test();
+

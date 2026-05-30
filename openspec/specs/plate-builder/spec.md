@@ -1,5 +1,8 @@
-## ADDED Requirements
+# Plate Builder Specification
 
+## Purpose
+Permite a los usuarios personalizar el texto grabado en las placas de sus nomenclaturas con validación en tiempo real y flujo de pedidos múltiples.
+## Requirements
 ### Requirement: Plate text input with format validation
 The system SHALL display a `PlateBuilder` component when `product.builder_type === 'plate'`, allowing the customer to enter free text for each plate with real-time format validation. A plate text MUST satisfy all of the following constraints simultaneously: maximum 6 digits, maximum 4 letters, only alphanumeric characters and the hyphen `-` are allowed (no spaces, dots, slashes, or other characters), and minimum length of 1 character.
 
@@ -61,3 +64,11 @@ The system SHALL disable the plate text input and all action buttons when `produ
 #### Scenario: Out-of-stock product disables builder
 - **WHEN** a product with `builder_type = 'plate'` has `stock = 0`
 - **THEN** the text input is disabled, the "Agregar placa" button is disabled, and a stock-out indicator is shown
+
+### Requirement: Plate builder micro-interactions
+The `PlateBuilder` and `NomenclatureBuilder` components SHALL incorporate premium micro-interactions, including smooth transitions for adding/removing plates from the session queue, and hover physics on the interaction buttons.
+
+#### Scenario: User adds a plate to the queue
+- **WHEN** a user clicks "Agregar placa" and the plate is added to the session queue
+- **THEN** the new plate item appears in the list with a smooth GSAP or CSS transition
+

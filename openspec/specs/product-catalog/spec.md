@@ -1,5 +1,8 @@
-## ADDED Requirements
+# Product Catalog Specification
 
+## Purpose
+Gestionar y presentar el catálogo de nomenclaturas y placas metálicas para los clientes en la tienda pública, así como el panel administrativo de control de inventario.
+## Requirements
 ### Requirement: Listar todos los productos
 El sistema SHALL mostrar en `/admin/productos` una tabla paginada con todos los productos (activos e inactivos) incluyendo nombre, material, precio, stock y estado.
 
@@ -59,3 +62,11 @@ El sistema SHALL permitir archivar (desactivar) un producto cambiando `is_active
 #### Scenario: Reactivar producto archivado
 - **WHEN** el admin reactiva un producto inactivo
 - **THEN** el producto vuelve a aparecer en el catálogo público
+
+### Requirement: Product grid visual presentation
+The product catalog on the frontend SHALL present products using the gapless bento grid system and MUST include premium hover micro-interactions (`scale-105` with long transitions).
+
+#### Scenario: User hovers over a product card
+- **WHEN** a user hovers over a `ProductCard` component
+- **THEN** the card content scales up slightly with a smooth, long duration transition
+
