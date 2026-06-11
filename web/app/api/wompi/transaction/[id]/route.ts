@@ -66,6 +66,15 @@ export async function GET(
 
       if (updateError) {
         console.error('Error al actualizar pedido en Supabase:', updateError);
+      } else {
+        // Enviar correos de notificación de forma asíncrona
+        try {
+          const { processOrderEmails } = await import('@/lib/resend');
+          // No bloqueamos la respuesta HTTP del cliente mientras se envían los correos
+          processOrderEmails(reference, adminSupabase);
+        } catch (mailError) {
+          console.error('Error al importar o ejecutar processOrderEmails en transacción:', mailError);
+        }
       }
     }
 

@@ -350,3 +350,77 @@ export async function sendAdminNotificationEmail(
     return { success: false, error: error.message };
   }
 }
+
+/**
+ * Procesa y envía todos los correos relacionados con un pedido pagado
+ * (Tanto al cliente como al administrador)
+ */
+export async function processOrderEmails(orderId: string, adminSupabase: any) {
+  try {
+    console.log(`✉️ Iniciando proceso de envío de correos para el pedido ${orderId}...`);
+    
+    // 1. Obtener la información completa de la orden
+    const { data: fullOrder, error: orderQueryError } = await adminSupabase
+      .from('orders')
+      .select('id, user_id, total, shipping_name, shipping_phone, shipping_address, wompi_transaction_id')
+      .eq('id', orderId)
+      .single();
+
+    if (orderQueryError || !fullOrder) {
+      console.error('❌ Error al obtener los datos detallados de la orden para enviar correo:', orderQueryError);
+      return;
+    }
+
+    // 2. Obtener los ítems de la orden y sus productos asociados
+    const { data: items, error: itemsQueryError } = await adminSupabase
+      .from('order_items')
+      .select(`
+        quantity,
+        unit_price,
+        subtotal,
+        customization,
+        products (
+          name,
+          material
+        )
+      `)
+      .eq('order_id', orderId);
+
+    if (itemsQueryError || !items) {
+      console.error('❌ Error al obtener los ítems de la orden para enviar correo:', itemsQueryError);
+      return;
+    }
+
+    // 3. Obtener el email del cliente desde Supabase Auth (si tiene user_id)
+    let customerEmail = '';
+    if (fullOrder.user_id) {
+      const { data: userData, error: userError } = await adminSupabase.auth.admin.getUserById(fullOrder.user_id);
+      if (userError || !userData?.user) {
+        console.warn(`⚠️ No se pudo obtener el usuario de Auth para user_id: ${fullOrder.user_id}`, userError);
+      } else {
+        customerEmail = userData.user.email || '';
+      }
+    }
+
+    // Enviar correo al cliente si tiene dirección de correo electrónico
+    if (customerEmail) {
+      try {
+        await sendOrderConfirmationEmail(customerEmail, fullOrder, items as any);
+      } catch (custMailErr) {
+        console.error('❌ Error al enviar correo de confirmación al cliente:', custMailErr);
+      }
+    } else {
+      console.warn('⚠️ No se encontró el correo del cliente en Supabase Auth. Saltando correo del cliente.');
+    }
+
+    // Enviar correo al administrador
+    try {
+      await sendAdminNotificationEmail(fullOrder, items as any);
+    } catch (adminMailErr) {
+      console.error('❌ Error al enviar correo de notificación al administrador:', adminMailErr);
+    }
+  } catch (mailError) {
+    console.error('❌ Error general en la tarea de envío de correos:', mailError);
+  }
+}
+
