@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { CartProvider } from "@/lib/cart-context";
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -47,6 +48,10 @@ export default function RootLayout({
           <Footer />
           <WhatsAppButton />
         </CartProvider>
+        <Script 
+          src="https://checkout.wompi.co/widget.js" 
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

@@ -6,7 +6,6 @@ import { useCart } from '@/lib/cart-context';
 import { formatPrice } from '@/lib/mock-data';
 import { Shield, Lock, Loader2 } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
-import Script from 'next/script';
 import styles from './page.module.css';
 
 declare global {
@@ -106,6 +105,37 @@ export default function PagoPage() {
 
     // 3. Obtener firma de integridad desde nuestra API
     try {
+      if (typeof window === 'undefined') {
+        setLoading(false);
+        return;
+      }
+
+      // Esperar a que el widget de Wompi cargue (máximo 5 segundos)
+      if (!window.WidgetCheckout) {
+        let attempts = 0;
+        const maxAttempts = 10;
+        const waitForWidget = () => new Promise<void>((resolve, reject) => {
+          const interval = setInterval(() => {
+            attempts++;
+            if (window.WidgetCheckout) {
+              clearInterval(interval);
+              resolve();
+            } else if (attempts >= maxAttempts) {
+              clearInterval(interval);
+              reject(new Error('El widget de Wompi no pudo cargarse. Verifica tu conexión a internet y recarga la página.'));
+            }
+          }, 500);
+        });
+
+        try {
+          await waitForWidget();
+        } catch (widgetErr: any) {
+          alert(widgetErr.message);
+          setLoading(false);
+          return;
+        }
+      }
+
       const integrityResponse = await fetch('/api/wompi/integrity', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -115,17 +145,25 @@ export default function PagoPage() {
         }),
       });
 
-      const { signature, error: sigError } = await integrityResponse.json();
+      const { signature, amountInCents: serverAmountInCents, error: sigError } = await integrityResponse.json();
 
       if (sigError) throw new Error(sigError);
+
+      console.log('🔐 Widget params:', {
+        currency: 'COP',
+        amountInCents: serverAmountInCents,
+        reference: order.id,
+        publicKey: process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY,
+        signatureIntegrity: signature,
+      });
 
       // 4. Configurar y abrir el Widget de Wompi
       const checkout = new window.WidgetCheckout({
         currency: 'COP',
-        amountInCents: Math.round(total * 100),
+        amountInCents: serverAmountInCents,
         reference: order.id,
         publicKey: process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY,
-        signature: signature,
+        signature: { integrity: signature },
         redirectUrl: `${window.location.origin}/pago/confirmacion`,
       });
 
@@ -139,7 +177,9 @@ export default function PagoPage() {
       });
 
     } catch (err: any) {
-      alert('Error al iniciar el pago con Wompi: ' + err.message);
+      console.error('Error al iniciar el pago con Wompi:', err);
+      const errMsg = err instanceof Error ? err.message : (typeof err === 'object' ? JSON.stringify(err) : String(err));
+      alert('Error al iniciar el pago con Wompi: ' + errMsg);
     } finally {
       setLoading(false);
     }
@@ -276,10 +316,6 @@ export default function PagoPage() {
           </div>
         </div>
       </form>
-      <Script 
-        src="https://checkout.wompi.co/widget.js" 
-        strategy="beforeInteractive"
-      />
     </div>
   );
 }

@@ -30,7 +30,15 @@ export async function POST(request: Request) {
     const chain = `${reference}${amountInCents}${currency}${secret}`;
     const hash = crypto.createHash('sha256').update(chain).digest('hex');
 
-    return NextResponse.json({ signature: hash });
+    console.log('🔐 Firma de integridad generada:');
+    console.log(`  Reference: "${reference}"`);
+    console.log(`  Amount (original): ${amount}`);
+    console.log(`  AmountInCents: ${amountInCents}`);
+    console.log(`  Currency: "${currency}"`);
+    console.log(`  Chain (sin secreto): "${reference}${amountInCents}${currency}[SECRET]"`);
+    console.log(`  Hash: "${hash}"`);
+
+    return NextResponse.json({ signature: hash, amountInCents });
   } catch (error) {
     console.error('Error en API Integrity:', error);
     return NextResponse.json(
