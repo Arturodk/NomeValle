@@ -391,14 +391,39 @@ export async function processOrderEmails(orderId: string, adminSupabase: any) {
       return;
     }
 
-    // 3. Obtener el email del cliente desde Supabase Auth (si tiene user_id)
+    // 3. Obtener el email del cliente
     let customerEmail = '';
-    if (fullOrder.user_id) {
+
+    // Intentar obtener el email directamente de la transacción de Wompi primero
+    if (fullOrder.wompi_transaction_id) {
+      try {
+        const isProduction = process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY?.startsWith('pub_prod_');
+        const baseUrl = isProduction 
+          ? 'https://production.wompi.co/v1' 
+          : 'https://sandbox.wompi.co/v1';
+        const wompiUrl = `${baseUrl}/transactions/${fullOrder.wompi_transaction_id}`;
+        
+        const wompiResponse = await fetch(wompiUrl);
+        if (wompiResponse.ok) {
+          const responseData = await wompiResponse.json();
+          if (responseData?.data?.customer_email) {
+            customerEmail = responseData.data.customer_email;
+            console.log(`✅ Email obtenido de la transacción Wompi: ${customerEmail}`);
+          }
+        }
+      } catch (wompiEmailError) {
+        console.error('⚠️ Error al consultar el email en la transacción de Wompi:', wompiEmailError);
+      }
+    }
+
+    // Fallback al email del usuario de Supabase Auth
+    if (!customerEmail && fullOrder.user_id) {
       const { data: userData, error: userError } = await adminSupabase.auth.admin.getUserById(fullOrder.user_id);
       if (userError || !userData?.user) {
         console.warn(`⚠️ No se pudo obtener el usuario de Auth para user_id: ${fullOrder.user_id}`, userError);
       } else {
         customerEmail = userData.user.email || '';
+        console.log(`ℹ️ Usando email de Supabase Auth: ${customerEmail}`);
       }
     }
 
