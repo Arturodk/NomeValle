@@ -16,7 +16,8 @@ export default async function OrderDetailPage(props: { params: Promise<{ id: str
       order_items (
         id,
         quantity,
-        price,
+        unit_price,
+        subtotal,
         customization,
         products ( name )
       )
@@ -82,9 +83,9 @@ export default async function OrderDetailPage(props: { params: Promise<{ id: str
                       )}
                     </td>
                     <td>{item.quantity}</td>
-                    <td>{formatPrice(item.price)}</td>
+                    <td>{formatPrice(item.unit_price)}</td>
                     <td style={{ paddingRight: 0, textAlign: 'right', fontWeight: 500 }}>
-                      {formatPrice(item.quantity * item.price)}
+                      {formatPrice(item.subtotal)}
                     </td>
                   </tr>
                 ))}
