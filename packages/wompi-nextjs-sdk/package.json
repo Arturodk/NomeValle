@@ -1,0 +1,27 @@
+{
+  "name": "wompi-nextjs-sdk",
+  "version": "1.0.0",
+  "description": "A lightweight, fully typed TypeScript SDK for integrating Wompi payment gateway in Next.js and Node.js applications.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "tsc && node dist/tests/crypto.test.js"
+  },
+  "keywords": [
+    "wompi",
+    "nextjs",
+    "sdk",
+    "payments",
+    "colombia",
+    "typescript",
+    "checkout",
+    "signature"
+  ],
+  "author": "Arturodk",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
