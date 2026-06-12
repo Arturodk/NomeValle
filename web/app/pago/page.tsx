@@ -25,6 +25,11 @@ export default function PagoPage() {
     name: '', phone: '', address: '', city: '', notes: ''
   });
 
+  const localCities = ['cali', 'jamundi', 'jamundí', 'yumbo', 'palmira'];
+  const isLocalShipping = localCities.includes(
+    form.city.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  );
+
   useEffect(() => {
     const getData = async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -300,10 +305,22 @@ export default function PagoPage() {
               </div>
             ))}
           </div>
+          <div style={{ padding: '12px 0', borderBottom: '1px solid #e5e7eb', display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
+            <span>Envío</span>
+            <span style={{ fontWeight: 600, color: isLocalShipping ? '#16a34a' : '#4b5563' }}>
+              {isLocalShipping ? 'Gratis (Local)' : 'Contra entrega (Por cobrar)'}
+            </span>
+          </div>
           <div className={styles.orderTotal}>
             <span>Total a pagar</span>
             <span>{formatPrice(total)}</span>
           </div>
+
+          <p style={{ fontSize: '11px', color: '#6b7280', margin: '12px 0', lineHeight: '1.4' }}>
+            {isLocalShipping 
+              ? '* El envío a Cali, Jamundí, Palmira o Yumbo es gratuito a domicilio.' 
+              : '* El envío se realiza flete por cobrar. Pagas el costo de transporte directamente a la transportadora al recibir.'}
+          </p>
 
           <button type="submit" className="btn btn-primary btn-lg btn-full">
             <Lock size={18} />

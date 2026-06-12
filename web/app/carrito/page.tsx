@@ -81,12 +81,16 @@ export default function CarritoPage() {
           </div>
           <div className={styles.summaryRow}>
             <span>Envío</span>
-            <span className={styles.shippingNote}>Por calcular</span>
+            <span className={styles.shippingNote} style={{ fontWeight: 500 }}>Gratis local / Por cobrar nac.</span>
           </div>
           <div className={styles.summaryTotal}>
             <span>Total</span>
             <span>{formatPrice(total)}</span>
           </div>
+          <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '12px', marginBottom: '16px', lineHeight: '1.4' }}>
+            * <strong>Envío local gratis</strong> en Cali, Jamundí, Palmira y Yumbo.<br />
+            * <strong>Resto del país:</strong> Pago contra entrega (pagas el costo del flete a la transportadora al recibir).
+          </p>
           <Link href="/pago" className="btn btn-primary btn-lg btn-full">
             Proceder al pago
           </Link>
